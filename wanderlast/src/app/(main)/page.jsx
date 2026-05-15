@@ -1,5 +1,4 @@
-import HeroSec from '@/components/homeSec/HeroSec';
-import React from 'react';
+import HeroSec from "@/app/components/homeSec/HeroSec";
 
 const Home = () => {
   return (

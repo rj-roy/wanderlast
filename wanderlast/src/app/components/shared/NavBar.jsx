@@ -1,14 +1,36 @@
 'use client'
 import { useState } from "react";
 import { Link, Button } from "@heroui/react";
-import {Cloud} from '@gravity-ui/icons';
+import { usePathname } from "next/navigation";
 
 const NavBar = () => {
+    const path = usePathname();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const links = [
+        { name: 'Home', href: '/' },
+        { name: 'Destinations', href: '/destinations' },
+        { name: 'My Bookings', href: '/my-bookings' },
+        { name: 'admin', href: '/admin' }
+    ];
+
+    const rendeerLinks = links.map((l, i) => (
+        <Link
+            key={i}
+            href={l.href}
+            className={`p-2 no-underline hover:text-white hover:bg-[#15a1bf] rounded-sm ${path === l.href ? "text-white bg-[#15a1bf] rounded-sm" : ""}`}
+        >
+            {l.name}
+        </Link>
+    ))
+
     return (
         <div>
             <nav className="sticky top-0 z-40 w-full border-b border-separator bg-background/70 backdrop-blur-lg">
-                <header className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+                <header className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+                    <ul className="hidden items-start gap-4 md:flex">
+                        {rendeerLinks}
+                    </ul>
+
                     <div className="flex items-center gap-4">
                         <button
                             className="md:hidden"
@@ -40,52 +62,33 @@ const NavBar = () => {
                                 )}
                             </svg>
                         </button>
-                        <div className="flex items-center gap-3">
-                            <Cloud/>
-                            <p className="font-bold">ACME</p>
-                        </div>
+                        
                     </div>
-                    <ul className="hidden items-center gap-4 md:flex">
-                        <li>
-                            <Link href="#">Features</Link>
-                        </li>
-                        <li>
-                            <Link href="#" className="font-medium text-accent" aria-current="page">
-                                Dashboard
-                            </Link>
-                        </li>
-                        <li>
-                            <Link href="#">Pricing</Link>
-                        </li>
-                    </ul>
+
                     <div className="hidden items-center gap-4 md:flex">
-                        <Link href="#">Login</Link>
-                        <Button>Sign Up</Button>
+                        <Link href="/signin" className={'no-underline'}>Login</Link>
+                        <Button>
+                            <Link href="/signup" className={'no-underline text-white'}>
+                                Sign Up
+                            </Link>
+                        </Button>
                     </div>
                 </header>
                 {isMenuOpen && (
                     <div className="border-t border-separator md:hidden">
                         <ul className="flex flex-col gap-2 p-4">
-                            <li>
-                                <Link href="#" className="block py-2">
-                                    Features
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="block py-2 font-medium text-accent">
-                                    Dashboard
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="#" className="block py-2">
-                                    Pricing
-                                </Link>
-                            </li>
-                            <li className="mt-4 flex flex-col gap-2 border-t border-separator pt-4">
-                                <Link href="#" className="block py-2">
-                                    Login
-                                </Link>
-                                <Button className="w-full">Sign Up</Button>
+                            {rendeerLinks}
+                            <li className="mt-4 grid gap-2 border-t border-separator pt-4">
+                                <Button className="w-full">
+                                    <Link href="/signin" className={'no-underline text-white'}>
+                                        Log In
+                                    </Link>
+                                </Button>
+                                <Button className="w-full">
+                                    <Link href="/signup" className={'no-underline text-white'}>
+                                        Sign Up
+                                    </Link>
+                                </Button>
                             </li>
                         </ul>
                     </div>
